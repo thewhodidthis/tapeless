@@ -1,0 +1,22 @@
+{
+  "name": "tapeless",
+  "version": "5.0.0",
+  "private": true,
+  "description": "Helps with in-browser, TAP compatible unit testing",
+  "homepage": "https://github.com/thewhodidthis/tapeless#readme",
+  "bugs": "https://github.com/thewhodidthis/tapeless/issues",
+  "repository": "github:thewhodidthis/tapeless",
+  "license": "ISC",
+  "author": "Thepersonwhodidthis <thewhodidthis@fastmail.com> (http://thewhodidthis.com/)",
+  "engines": {
+    "node": ">=14.17.0",
+    "npm": ">=6.14.13"
+  },
+  "main": "./main.js",
+  "type": "module",
+  "exports": {
+    ".": "./main.js",
+    "likewise": "./likewise.js",
+    "tapeling": "./tapeling.js"
+  }
+}

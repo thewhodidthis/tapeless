@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>tapeless.js</title>
+    <script type="module">
+      import "https://thewhodidthis.github.io/cutaway/main.js"
+      import { assert } from "https://esm.sh/chai@4.3.7"
+      import * as tapeling from "./tapeling.js"
+      import * as likewise from "./likewise.js"
+      import * as tapeless from "./main.js"
+
+      {
+        const equalMaybe = likewise.assert.equal(2, 2)
+
+        console.assert(likewise.assert.equal.name === "same")
+        console.assert(equalMaybe)
+
+        const differentHopefully = likewise.assert.notEqual(2, 3)
+
+        console.assert(likewise.assert.notEqual.name === "different")
+        console.assert(differentHopefully)
+
+        // Passing courtesy of `Object.is()`.
+        console.assert(likewise.assert.equal(null, null))
+        console.assert(likewise.assert.notEqual(null, 0))
+      }
+
+      {
+        const tapeStrictEqual = tapeling.tape(assert.strictEqual)
+
+        tapeStrictEqual
+          .describe("`exit` a function")
+          .test(typeof tapeling.exit, "function")
+          .describe("`tape` a function", "exports as advertised")
+          .test(typeof tapeling.tape, "function")
+          .describe(null, "description defaults to assertion name")
+          .test(2, 2)
+
+        const tapeThrows = tapeling.tape(assert.throws)
+
+        // Should be description-less.
+        tapeThrows.test(() => {
+          throw Error
+        })
+
+        // Wrap whole of built in assertions module.
+        tapeling.tape(assert)
+          .describe("a-ok", "will wrap")
+          .test(true)
+          .tape(undefined)
+          .describe("passing", "done checking defaults")
+          .test()
+      }
+
+      {
+        const { assert, report } = tapeless
+
+        assert
+          .describe("assert exists")
+          .test(assert)
+          .describe("assert.equal exists")
+          .test(assert.equal)
+          .test("truthy, not a description")
+
+        assert.equal
+          .test("skip description", "skip description")
+          .describe("assert.ok is a function")
+          .test(typeof assert.ok.test, "function")
+
+        self.addEventListener("message", function onmessage(e) {
+          const { head, last }  = e.data
+
+          if (last) {
+            assert
+              .describe("has TAP plan")
+              .test(last.find(m => m.includes("1..4")))
+              .describe("has 4 tests total")
+              .test(last.find(m => m.includes("# tests 4")))
+
+            assert.equal
+              .describe("has 3 passing tests")
+              .test(last[14], 3)
+              .describe("has 1 failing test")
+              .test(last[16], 1)
+
+            report()
+          }
+
+          if (head) {
+            assert
+              .describe("TAP version header comes on top")
+              .test(head[1].startsWith("TAP version 13"))
+              .describe("does exit prematurely")
+              .test(head.find(m => m.includes("Bail out!")))
+
+            assert.equal
+              .describe("excludes bill", "example bails (bad)")
+              .test(head.findIndex(m => m.includes("# tests 0")), -1)
+          }
+        })
+
+        {
+          const iframe = document.createElement("iframe")
+
+          iframe.srcdoc = `
+            <!DOCTYPE html>
+            <script>
+              self.messages = []
+
+              console.log = function(...args) {
+                self.messages.push(...args)
+              }
+            <\/script>
+            <script type="module">
+              import { report } from "./main.js"
+
+              try {
+                throw { code: "1" }
+              } catch ({ code }) {
+                report(code)
+              }
+              window.parent.postMessage({ head: self.messages })
+            <\/script>`
+
+          iframe.style = `display: none;`
+
+          document.body.append(iframe)
+        }
+
+        {
+          const iframe = document.createElement("iframe")
+
+          iframe.srcdoc = `
+            <!DOCTYPE html>
+            <script>
+              self.messages = []
+
+              console.log = function(...args) {
+                self.messages.push(...args)
+              }
+            <\/script>
+            <script type="module">
+              import { assert, report } from "./main.js"
+
+              assert
+                .describe("assert exists")
+                .test(assert)
+                .describe("assert.equal exists")
+                .test(assert.equal)
+
+              assert.equal
+                .describe("assert.notOk is a function")
+                .test(typeof assert.notOk.test, "function")
+
+              assert.ok
+                .describe("really want false to be true")
+                .test(false)
+
+              report()
+
+              window.parent.postMessage({ last: self.messages })
+            <\/script>`
+
+          iframe.style = `display: none;`
+
+          document.body.append(iframe)
+        }
+      }
+    </script>
+  </head>
+  <body></body>
+</html>
