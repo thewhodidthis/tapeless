@@ -43,7 +43,7 @@ When testing against the DOM or Web APIs is there any replacement for the browse
 ## overview
 ### main
 
-A test harness that is smaller than [tape](https://github.com/substack/tape) and can be used in-browser as is. There are only four assertions provided: `ok()`, `notOk()`, `equal()`, and `notEqual()`. Add [kpow](https://npm.im/kpow) and [cutaway](https://npm.im/cutaway) to run browser side. For example, given a test script like:
+A test harness that is smaller than [tape](https://github.com/substack/tape) and can be used in-browser as is. There are only four assertions provided: `ok()`, `notOk()`, `equal()`, and `notEqual()`. Add [kpow](https://npm.im/kpow) for instant serving and [cutaway](https://npm.im/cutaway) for a nice printout when targeting the browser. For example, given a test script like:
 
 ```js
 // Sample test.js
@@ -74,7 +74,7 @@ Gives out:
 
 ### likewise
 
-Produces exceptions for failing assertions. Includes ready-made checks for truthiness and equality. The named export `reassert()` is available for creating own assertions. For example,
+Produces exceptions for failing assertions. Includes ready-made checks for truthiness and equality. The named export `reassert()` is available for creating own assertions. For example:
 
 ```js
 import { reassert } from "https://thewhodidthis.github.io/tapeless/likewise.js"
@@ -94,7 +94,7 @@ console.assert(ok(true), "ok")
 console.assert(notOk(0), "not ok")
 ```
 
-Additionally, `ok()` and `equal()` plus counterparts are attached to `assert()` already wrapped. For example,
+Additionally, `ok()` and `equal()` plus counterparts are attached to `assert()` already wrapped. For example:
 
 ```js
 import { assert } from "https://thewhodidthis.github.io/tapeless/likewise.js"
@@ -110,7 +110,7 @@ console.assert(assert.equal(null, null), "equal")
 
 ### tapeling
 
-Helps gather TAP reports. Assuming a test function that throws if a given operation fails as for example,
+Helps gather TAP reports. Assuming a test function that throws if a given operation fails as for example:
 
 ```js
 // Check for sameness or equality.
@@ -131,7 +131,7 @@ function throwsIfDifferent(a, b, message = "Sorry!") {
 }
 ```
 
-Wrap with `tape()` and call `exit()` to print out the corresponding TAP report. For example,
+Wrap with `tape()` and call `exit()` to print out the corresponding TAP report. For example:
 
 ```js
 // Needs the `--experimental-network-imports` flag when called with `node(1)`.
