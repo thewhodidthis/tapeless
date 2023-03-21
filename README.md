@@ -43,7 +43,7 @@ When testing against the DOM or Web APIs is there any replacement for the browse
 ## overview
 ### main
 
-A test harness that is smaller than [tape](https://github.com/substack/tape) and can be used in-browser as is. There are only four assertions provided: `ok()`, `notOk()`, `equal()`, and `notEqual()`. Add [kpow](https://npm.im/kpow) for instant serving and [cutaway](https://npm.im/cutaway) for a nice printout when targeting the browser. For example, given a test script like:
+A test harness smaller than [tape](https://github.com/substack/tape) that can be used in-browser as is. There are only four assertions provided: `ok()`, `notOk()`, `equal()`, and `notEqual()`. Add [kpow](https://npm.im/kpow) for instant serving and [cutaway](https://npm.im/cutaway) for a nice printout when targeting the browser. For example, given a test script like:
 
 ```js
 // Sample test.js
