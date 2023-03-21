@@ -34,7 +34,7 @@ When testing against the DOM or Web APIs is there any replacement for the browse
 
 ```html
 <script src="https://thewhodidthis.github.io/tapeless/tapeless.js"></script>
-<script type="module">
+<script>
   tapeless.assert.notOk.describe("JS is weird").test(0, -0)
   tapeless.report()
 </script>
