@@ -23,7 +23,7 @@ Source from an [import map](https://github.com/WICG/import-maps):
 
 Download from GitHub directly if using a package manager:
 
-```sh
+```
 # Add to package.json
 npm install thewhodidthis/tapeless -D
 ```
@@ -64,7 +64,7 @@ tapeless.report()
 
 Bundling along the lines of:
 
-```sh
+```
 npx -p kpow 'cat test.js | kpow'
 ```
 
